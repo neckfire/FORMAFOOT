@@ -86,7 +86,20 @@ def load_json(file_path):
     with open(file_path, 'r') as file:
         return json.load(file)
 
+def print_document_counts(formation_instance):
+    nombres_doc = 0
+    for structure in formation_instance.structure:
+        for chapitre in structure.chapitres:
+            print("Chapter:", chapitre.chapitre_titre)
+            for subchapitre in chapitre.subchapitre:
+                print("Subchapter:", subchapitre.subchapitre_titre)
+                print("Number of documents:", len(subchapitre.documents))
+                nombres_doc += len(subchapitre.documents)
+                print("-----------------------------")
+    return nombres_doc
+
 file_path = 'ressources/api object/api.json'
 json_data = load_json(file_path)
 
 formation_instance = Formation(json_data)
+formation_instance.nb_doc = print_document_counts(formation_instance)

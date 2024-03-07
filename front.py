@@ -67,6 +67,7 @@ def add_chapitre(pdf, chapitre, chapitreindex):
         for doc in subchapitre.documents:
             pdf.chapter_body(f"Document ID: {doc.id}\nType: {doc.type}\nDescription: {doc.description}\n")
 
+
 pdf = PDF()
 i=0
 imageindex=("ressources/back/1.png","ressources/back/3.png","ressources/back/2.png","ressources/back/3.png")
@@ -90,4 +91,4 @@ pdf.set_fill_color(4, 74, 189)
 #Rect(float x, float y, float w, float h [, string style])
 pdf.rect(x=118,y=168, w=76,h=ceil((pdf.get_string_width(str(formation_instance.prerequis))/76))*15,style='F')
 pdf.add_text_block("Pré-requis: \n " + str(formation_instance.prerequis),x=118,y=168, w=76,h=14, border=0, align='C',size=15)
-
+pdf.add_text_block("Nombre de documents: \n " + str(formation_instance.nb_doc),x=7,y=225, w=80,h=10, border=0, align='C',size=15)
