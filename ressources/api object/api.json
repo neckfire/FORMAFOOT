@@ -15,7 +15,7 @@
     "info_sup": null,
     "categorie": "Préparation physique",
     "is_active": true,
-    "prerequis": "Prerequis 1, Prerequis 2, Prerequis 3, Prerequis 4, Prerequis 2, Prerequis 3, Prerequis 4",
+    "prerequis": "Prerequis 1, Prerequis 2, Prerequis 3, Prerequis 4",
     "structure": [
         {
             "id": 1,
