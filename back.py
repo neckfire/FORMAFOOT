@@ -77,7 +77,7 @@ class Module:
         self.module_titre: str = module_data.get('module_titre')  # Titre du module
 
 def load_json(file_path: str) -> dict:
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding="UTF8") as file:
         return json.load(file)
 
 def print_document_counts(formation_instance: Formation) -> int:

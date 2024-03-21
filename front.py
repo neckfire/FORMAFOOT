@@ -1,11 +1,11 @@
 from fpdf import FPDF
-from back import formation_instance
+from back import Formation
 from math import ceil
 
-
 class PDF(FPDF):
-    def __init__(self):
+    def __init__(self, formation: Formation):
         super().__init__()
+        self.formation_instance = formation
         # Set default font
         self.set_font('Arial', '', 12)
         # Set background color
