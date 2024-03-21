@@ -6,6 +6,8 @@ class PDF(FPDF):
     def __init__(self, formation: Formation):
         super().__init__()
         self.formation_instance = formation
+        self.imageindex=("ressources/back/1.png","ressources/back/3.png","ressources/back/2.png","ressources/back/3.png","ressources/images/sticker_round.png")
+
         # Set default font
         self.set_font('Arial', '', 12)
         # Set background color
@@ -49,53 +51,52 @@ class PDF(FPDF):
         #self.add_font("Graebenbach", "", "ressources/fonts/Graebenbach-Medium.otf", uni=True)
         #self.set_font("Graebenbach")
 
-def extract_details(formation_instance):
-    #pdf.add_text_block(f"ID: {formation_instance.id}", x=5, y=5, w=0, h=6)
-    #pdf.add_text_block(f"Prix: {formation_instance.prix}", x=10, y=160, w=0, h=6)
-    #pdf.add_text_block(f"Créateur: {formation_instance.createur.nom} {formation_instance.createur.prenom}", x=10, y=160, w=0, h=6)
-    #pdf.add_text_block(f"Catégorie: {formation_instance.categorie}", x=10, y=160, w=0, h=6)
-    pdf.add_text_block(f"{formation_instance.description}", x=10, y=200, w=0, h=6, align='C', size=23)
-    #pdf.add_text_block(f"Référence: {formation_instance.ref}", x=175, y=257, w=0, h=6)
+    def create_pdf(self):
+        i=0
+        self.add_page()
+        self.add_logo(self.imageindex[i], x=0, y=0, w=210, h=297)
+        self.add_text_block(self.formation_instance.titre, x=10, y=150, w=0, h=20, border=1, align='C', size=40)
+        self.extract_details()
 
-def add_page_nb(nbpage: int):
-    pdf.add_logo(imageindex[4], x=85,y=262,w=30,h=30)
-    pdf.add_text_block(str(nbpage), x=90,y=275,w=20,h=2, border=0, align='C',size=7)
+        #self.image('ressources/images/bandeau_white.png', x=10, y=100, w=200, h=60)
+        #for structure in formation_instance.structure:
+        #    for chapitre in structure.chapitres:
+        #        add_chapitre(self, chapitre, i)
+        i+=1
+        self.add_page()
+        self.add_logo(self.imageindex[i], x=0, y=0, w=210, h=297)
+        self.add_text_block("Finançable: " + str(self.formation_instance.financeable),x=15,y=40, w=80,h=20, border=0, align='C',size=20)
+        self.add_text_block("Prix: " + str(self.formation_instance.prix),x=115,y=80, w=80,h=20, border=0, align='C',size=20)
+        self.add_text_block("Durée totale:\n" + str(self.formation_instance.duree),x=7,y=120, w=80,h=20, border=0, align='C',size=20)
+        self.set_fill_color(4, 74, 189)
+        #Rect(float x, float y, float w, float h [, string style])
+        self.rect(x=118,y=168, w=76,h=ceil((self.get_string_width(str(self.formation_instance.prerequis))/76))*15,style='F')
+        self.add_text_block("Pré-requis: \n " + str(self.formation_instance.prerequis),x=118,y=168, w=76,h=14, border=0, align='C',size=15)
+        self.add_text_block("Nombre de documents: \n " + str(self.formation_instance.nb_doc),x=7,y=225, w=80,h=10, border=0, align='C',size=15)
+        self.add_page_nb(2)
+        i+=1
+        self.add_page()
+        self.add_logo(self.imageindex[i], x=0, y=0, w=210, h=297)
+
+    def extract_details(self):
+        #pdf.add_text_block(f"ID: {formation_instance.id}", x=5, y=5, w=0, h=6)
+        #pdf.add_text_block(f"Prix: {formation_instance.prix}", x=10, y=160, w=0, h=6)
+        #pdf.add_text_block(f"Créateur: {formation_instance.createur.nom} {formation_instance.createur.prenom}", x=10, y=160, w=0, h=6)
+        #pdf.add_text_block(f"Catégorie: {formation_instance.categorie}", x=10, y=160, w=0, h=6)
+        self.add_text_block(f"{self.formation_instance.description}", x=10, y=200, w=0, h=6, align='C', size=23)
+        #pdf.add_text_block(f"Référence: {formation_instance.ref}", x=175, y=257, w=0, h=6)
+
+    def add_page_nb(self, nbpage: int):
+        self.add_logo(self.imageindex[4], x=85,y=262,w=30,h=30)
+        self.add_text_block(str(nbpage), x=90,y=275,w=20,h=2, border=0, align='C',size=7)
 
 
-def add_chapitre(pdf, chapitre, chapitreindex):
-    pdf.add_page()
-    pdf.add_logo(imageindex[i], x=0, y=0, w=210, h=297)
-    pdf.chapter_title(chapitre.chapitre_titre)
-    for subchapitre in chapitre.subchapitre:
-        pdf.chapter_title(subchapitre.subchapitre_titre)
-        for doc in subchapitre.documents:
-            pdf.chapter_body(f"Document ID: {doc.id}\nType: {doc.type}\nDescription: {doc.description}\n")
+    def add_chapitre(self):
+        self.add_page()
+        self.add_logo(self.imageindex[self.i], x=0, y=0, w=210, h=297)
+        self.chapter_title(self.formation_instance.chapitre.chapitre_titre)
+        for subchapitre in self.formation_instance.chapitre.subchapitre:
+            self.chapter_title(subchapitre.subchapitre_titre)
+            for doc in subchapitre.documents:
+                self.chapter_body(f"Document ID: {doc.id}\nType: {doc.type}\nDescription: {doc.description}\n")
 
-
-pdf = PDF()
-i=0
-imageindex=("ressources/back/1.png","ressources/back/3.png","ressources/back/2.png","ressources/back/3.png","ressources/images/sticker_round.png")
-pdf.add_page()
-pdf.add_logo(imageindex[i], x=0, y=0, w=210, h=297)
-pdf.add_text_block(formation_instance.titre, x=10, y=150, w=0, h=20, border=1, align='C', size=40)
-extract_details(formation_instance)
-
-#pdf.image('ressources/images/bandeau_white.png', x=10, y=100, w=200, h=60)
-#for structure in formation_instance.structure:
-#    for chapitre in structure.chapitres:
-#        add_chapitre(pdf, chapitre, i)
-i+=1
-pdf.add_page()
-pdf.add_logo(imageindex[i], x=0, y=0, w=210, h=297)
-pdf.add_text_block("Finançable: " + str(formation_instance.financeable),x=15,y=40, w=80,h=20, border=0, align='C',size=20)
-pdf.add_text_block("Prix: " + str(formation_instance.prix),x=115,y=80, w=80,h=20, border=0, align='C',size=20)
-pdf.add_text_block("Durée totale:\n" + str(formation_instance.duree),x=7,y=120, w=80,h=20, border=0, align='C',size=20)
-pdf.set_fill_color(4, 74, 189)
-#Rect(float x, float y, float w, float h [, string style])
-pdf.rect(x=118,y=168, w=76,h=ceil((pdf.get_string_width(str(formation_instance.prerequis))/76))*15,style='F')
-pdf.add_text_block("Pré-requis: \n " + str(formation_instance.prerequis),x=118,y=168, w=76,h=14, border=0, align='C',size=15)
-pdf.add_text_block("Nombre de documents: \n " + str(formation_instance.nb_doc),x=7,y=225, w=80,h=10, border=0, align='C',size=15)
-add_page_nb(2)
-i+=1
-pdf.add_page()
-pdf.add_logo(imageindex[i], x=0, y=0, w=210, h=297)

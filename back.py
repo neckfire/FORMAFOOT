@@ -1,4 +1,3 @@
-import json
 from typing import List, Optional
 
 class Document:
@@ -45,6 +44,7 @@ class Formation:
         self.financeable: Optional[bool] = formation_data.get('financeable')  # Indicateur de possibilité de financement (optionnel)
         self.texte_financeable: str = formation_data.get('texte_financeable')  # Texte sur la possibilité de financement
         self.duree = self.get_duration()  # Durée totale de la formation
+        self.nb_doc: int = self.print_document_counts()
 
     def get_duration(self):
         total_seconds = 0
@@ -68,6 +68,18 @@ class Formation:
         print(f"{int(total_hours)}H, {int(total_minutes)}, {int(total_seconds)} seconds")
         total_duration = f"{int(total_hours)} H {int(total_minutes)}"
         return total_duration
+    
+    def print_document_counts(self):
+        nombres_doc = 0
+        for structure in self.structure:
+            for chapitre in structure.chapitres:
+                print("Chapter:", chapitre.chapitre_titre)
+                for subchapitre in chapitre.subchapitre:
+                    print("Subchapter:", subchapitre.subchapitre_titre)
+                    print("Number of documents:", len(subchapitre.documents))
+                    nombres_doc += len(subchapitre.documents)
+                    print("-----------------------------")
+        return nombres_doc
 
 class Module:
     def __init__(self, module_data: dict):
@@ -76,24 +88,4 @@ class Module:
         self.description: str = module_data.get('description')  # Description du module
         self.module_titre: str = module_data.get('module_titre')  # Titre du module
 
-def load_json(file_path: str) -> dict:
-    with open(file_path, 'r', encoding="UTF8") as file:
-        return json.load(file)
 
-def print_document_counts(formation_instance: Formation) -> int:
-    nombres_doc = 0
-    for structure in formation_instance.structure:
-        for chapitre in structure.chapitres:
-            print("Chapter:", chapitre.chapitre_titre)
-            for subchapitre in chapitre.subchapitre:
-                print("Subchapter:", subchapitre.subchapitre_titre)
-                print("Number of documents:", len(subchapitre.documents))
-                nombres_doc += len(subchapitre.documents)
-                print("-----------------------------")
-    return nombres_doc
-
-file_path: str = 'ressources/api object/api.json'
-json_data: dict = load_json(file_path)
-
-formation_instance: Formation = Formation(json_data)
-formation_instance.nb_doc: int = print_document_counts(formation_instance)
