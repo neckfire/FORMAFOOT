@@ -107,3 +107,21 @@ class Formation:
 Cette structure améliore la lisibilité et facilite la compréhension de l'objectif et de la fonctionnalité de votre projet.
 
 
+#### Feedback :####
+``` 
+    1er page:
+    rajouter logo en haut en  droite du pdf , enlever les logos qui sont sur le titre.
+
+    2em page :
+    enlever les  logos, faire des bloc aux niveaux de ce qui sera affiché(le texte) , aux niveaux du financable il faudra écrire non aux lieux de false,la police doit être la même partout ,respecter l'espacement,  dans le pré-requis il faut faire que plus il y en a et plus le pdf s'adapte en rajoutant une page.
+
+    3eme page :
+    mettre du gras pour separer les modules de leurs descriptions donc module en gras et description d'une manière normale et nombre de document en italic si possible  , la structure du texte ne doit pas toucher le logo donc il faut adapter la largeur du texte , mettre de bulletpoint aux niveaux des sous titre pour qu'on ai une meilleur lisibilité
+Code:
+    Main.py : Les fonctions écrites dans le main appartiennent au front ou au back, pas oblligatoire de les réecrire à moins que si ce sont des fonctions déterminées, protégées, les précéder dans le main avec un seul underscore _
+
+    Front.py : La méthode de FPDF def create_pdf(self) n'est pas forcément utile, nous avons ajouté une boucle contenant des variables spécifiques à toutes les 3 pages qui sont différentes chacune au lieu d'avoir d'avoir une méthode pour chaque page , aux niveaux des specificité de la taille des textes faire attention aux variable prédefinis dans la docs pour ne pas surcharger.
+    back.py :
+    Dans notre class Formation, noud avons mis une série d'informations, assez longue alors qu'elle pouvaient être toutes regroupées dans un dictionnaire qui sera ensuite ajoutée dans la classe pour améliorer la visibilité
+    self.duree c'est bien car c'est une méthode à part utile
+    
